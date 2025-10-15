@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4EBA66DB2E9FD18000393D4D /* PracticeDiceRoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBA66DA2E9FD18000393D4D /* PracticeDiceRoller.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4E8F09B12E8CE04E0081B0E3 /* CupcakeCorner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CupcakeCorner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EBA66DA2E9FD18000393D4D /* PracticeDiceRoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeDiceRoller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		4E8F09A82E8CE04E0081B0E3 = {
 			isa = PBXGroup;
 			children = (
+				4EBA66DA2E9FD18000393D4D /* PracticeDiceRoller.swift */,
 				4E8F09B32E8CE04E0081B0E3 /* CupcakeCorner */,
 				4E8F09B22E8CE04E0081B0E3 /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EBA66DB2E9FD18000393D4D /* PracticeDiceRoller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
