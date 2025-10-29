@@ -10,6 +10,9 @@ import SwiftUI
 struct CheckoutView: View {
     var order: Order
     
+    @State private var confirmationMessage = ""
+    @State private var showingConfirmation = false
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -29,13 +32,44 @@ struct CheckoutView: View {
                     .font(.title2.bold())
                     .padding(.top)
                 
-                Button("Place Order", action: {})
-                    .padding()
-                    .buttonStyle(.borderedProminent)
+                Button("Place Order") {
+                    Task {
+                        await placeOrder()
+                    }
+                }
+                .padding()
+                .buttonStyle(.borderedProminent)
             }
             .navigationTitle("Check Out")
             .toolbarTitleDisplayMode(.inline)
             .scrollBounceBehavior(.basedOnSize) // Using scroll views is a great way to make sure your layouts work great no matter what Dynamic Type size the user has enabled, but it creates a small annoyance: when your views fit just fine on a single screen, they still bounce a little when the user moves up and down on them.  The scrollBounceBehavior() modifier helps us disable that bounce when there is nothing to scroll. With that in place we'll get nice scroll bouncing when we have actually scrolling content, otherwise the scroll view acts like it isn't even there.
+            .alert("Thank You!", isPresented: $showingConfirmation) { } message: {
+                Text(confirmationMessage)
+            }
+        }
+    }
+    
+    func placeOrder() async {
+        guard let encoded = try? JSONEncoder().encode(order) else {
+            print("Failed to encode order.")
+            return
+        }
+        
+        let url = URL(string: "https://reqres.in/api/cupcakes")!
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        
+        do {
+            let (data, response) = try await URLSession.shared.upload(for: request, from: encoded)
+            // this code doesn't work anymore, as reqres requires API key now:
+            print("Recieved Data: \(String(data: data, encoding: .utf8) ?? "Got Nothing :(")")
+            
+            let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
+            confirmationMessage = "Your Order for \(decodedOrder.quantity)x \(Order.allTypes[decodedOrder.type].lowercased()) cupcakes is on its way!"
+            showingConfirmation = true
+        } catch {
+            print("Checkout Failed: \(error.localizedDescription)")
         }
     }
 }
