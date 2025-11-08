@@ -10,6 +10,7 @@ import SwiftUI
 struct CheckoutView: View {
     var order: Order
     
+    @State private var confirmationTitle = ""
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
     
@@ -43,7 +44,7 @@ struct CheckoutView: View {
             .navigationTitle("Check Out")
             .toolbarTitleDisplayMode(.inline)
             .scrollBounceBehavior(.basedOnSize) // Using scroll views is a great way to make sure your layouts work great no matter what Dynamic Type size the user has enabled, but it creates a small annoyance: when your views fit just fine on a single screen, they still bounce a little when the user moves up and down on them.  The scrollBounceBehavior() modifier helps us disable that bounce when there is nothing to scroll. With that in place we'll get nice scroll bouncing when we have actually scrolling content, otherwise the scroll view acts like it isn't even there.
-            .alert("Thank You!", isPresented: $showingConfirmation) { } message: {
+            .alert(confirmationTitle, isPresented: $showingConfirmation) { } message: {
                 Text(confirmationMessage)
             }
         }
@@ -66,10 +67,15 @@ struct CheckoutView: View {
             print("Recieved Data: \(String(data: data, encoding: .utf8) ?? "Got Nothing :(")")
             
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
+            confirmationTitle = "Thank You!"
             confirmationMessage = "Your Order for \(decodedOrder.quantity)x \(Order.allTypes[decodedOrder.type].lowercased()) cupcakes is on its way!"
             showingConfirmation = true
         } catch {
             print("Checkout Failed: \(error.localizedDescription)")
+
+            confirmationTitle = "Checkout Failed"
+            confirmationMessage = "Please Try Again Later!"
+            showingConfirmation = true
         }
     }
 }
