@@ -46,11 +46,11 @@ class Order: Codable {
     
     var hasValidAddress: Bool {
         // Although we could write length checks for each of our four text fields, this often trips people up – some names are only four or five letters, so if you try to add length validation you might accidentally exclude people. So, instead we’re just going to check that the name, streetAddress, city, and zip properties of our order aren’t empty.
-        if name.isEmpty || streetAddress.isEmpty || city.isEmpty || zip.isEmpty {
-            return false
-        }
+        let fields = [name, streetAddress, city, zip]
         
-        return true
+        return !fields.contains {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
     }
     
     var totalCost: Decimal {

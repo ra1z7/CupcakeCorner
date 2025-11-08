@@ -61,7 +61,7 @@ struct CheckoutView: View {
         request.httpMethod = "POST"
         
         do {
-            let (data, response) = try await URLSession.shared.upload(for: request, from: encoded)
+            let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             // this code doesn't work anymore, as reqres requires API key now:
             print("Recieved Data: \(String(data: data, encoding: .utf8) ?? "Got Nothing :(")")
             
@@ -89,7 +89,7 @@ struct OrderSummaryTableView: View {
                     .frame(width: 120, alignment: .leading)
                     .border(.secondary, width: 0.2)
                     .background(.secondary.opacity(0.1))
-                Text(value)
+                Text(value.trimmingCharacters(in: .whitespacesAndNewlines))
                     .padding(12)
                     .frame(width: 250, alignment: .leading)
                     .border(.secondary, width: 0.2)
