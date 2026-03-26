@@ -26,6 +26,7 @@ struct CheckoutView: View {
                     ProgressView()
                 }
                 .frame(height: 230)
+                .accessibilityHidden(true)
                 
                 OrderSummaryTableView(order: order)
                 

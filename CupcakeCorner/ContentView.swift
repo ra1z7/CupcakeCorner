@@ -21,6 +21,19 @@ struct ContentView: View {
                     }
                     
                     Stepper("Number of Cupcakes: \(order.quantity)", value: $order.quantity, in: 3...20)
+                        .accessibilityElement()
+                        .accessibilityLabel("Number of Cupcakes.")
+                        .accessibilityValue(String(order.quantity))
+                        .accessibilityAdjustableAction { swipeGestureDirection in
+                            switch swipeGestureDirection {
+                            case .increment:
+                                if order.quantity < 20 { order.quantity += 1 }
+                            case .decrement:
+                                if order.quantity > 3 { order.quantity -= 1 }
+                            default:
+                                break
+                            }
+                        }
                 }
                 
                 Section {
